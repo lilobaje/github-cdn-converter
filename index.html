@@ -5,329 +5,102 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GitHub to jsDelivr CDN Converter</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
             padding: 20px;
         }
-
         .container {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            padding: 40px;
-            max-width: 700px;
-            width: 100%;
+            background: white; border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px; max-width: 700px; width: 100%;
         }
-
-        h1 {
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 28px;
-            text-align: center;
+        h1 { text-align: center; margin-bottom: 10px; }
+        .subtitle { text-align: center; margin-bottom: 30px; color: #666; }
+        input {
+            width: 100%; padding: 15px;
+            border-radius: 10px; border: 2px solid #e0e0e0;
+            font-family: monospace;
         }
-
-        .subtitle {
-            color: #666;
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 14px;
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            color: #555;
-            font-weight: 600;
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 14px;
-            transition: all 0.3s;
-            font-family: 'Courier New', monospace;
-        }
-
-        input[type="text"]:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
         .btn {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            margin-bottom: 20px;
+            width: 100%; padding: 15px; margin-top: 15px;
+            background: #667eea; color: white;
+            border: none; border-radius: 10px; cursor: pointer;
         }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-        }
-
-        .btn:active {
-            transform: translateY(0);
-        }
-
-        .result-section {
-            display: none;
-            margin-top: 30px;
-            padding: 20px;
-            background: #f8f9ff;
-            border-radius: 10px;
-            border-left: 4px solid #667eea;
-        }
-
-        .result-section.show {
-            display: block;
-            animation: slideIn 0.3s ease;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .result-label {
-            color: #667eea;
-            font-weight: 600;
+        .result { margin-top: 20px; display: none; }
+        .url-box {
+            background: #f4f4f4; padding: 10px;
+            border-radius: 8px; word-break: break-all;
             margin-bottom: 10px;
-            font-size: 14px;
-        }
-
-        .result-url {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            word-break: break-all;
-            font-family: 'Courier New', monospace;
-            font-size: 13px;
-            color: #333;
-            margin-bottom: 10px;
-            border: 1px solid #e0e0e0;
-        }
-
-        .copy-btn {
-            padding: 10px 20px;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background 0.2s;
-            margin-right: 10px;
-        }
-
-        .copy-btn:hover {
-            background: #5568d3;
-        }
-
-        .copy-btn.copied {
-            background: #10b981;
-        }
-
-        .preview-section {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .preview-img {
-            max-width: 100%;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            margin-top: 10px;
-        }
-
-        .error {
-            color: #ef4444;
-            font-size: 14px;
-            margin-top: 10px;
-            display: none;
-        }
-
-        .error.show {
-            display: block;
-        }
-
-        .info-box {
-            background: #fef3c7;
-            border-left: 4px solid #f59e0b;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 20px;
-            font-size: 13px;
-            color: #78350f;
-        }
-
-        .info-box strong {
-            display: block;
-            margin-bottom: 5px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🚀 GitHub to jsDelivr CDN</h1>
-        <p class="subtitle">Convert your GitHub file URLs to fast CDN links instantly</p>
 
-        <div class="input-group">
-            <label for="githubUrl">Paste your GitHub URL:</label>
-            <input 
-                type="text" 
-                id="githubUrl" 
-                placeholder="https://github.com/username/repo/blob/commit-hash/path/to/file.png"
-                value="https://github.com/lilobaje/imagehost/blob/4453239bd82d2627466541fdb336bbb91e8ef67c/images/F.PxN.E%2020102025.png"
-            >
-            <p class="error" id="error">Invalid GitHub URL. Please use the format: https://github.com/username/repo/blob/...</p>
-        </div>
+<div class="container">
+    <h1>🚀 GitHub → CDN Tool</h1>
+    <p class="subtitle">Smart jsDelivr Converter (Auto Fix Enabled)</p>
 
-        <button class="btn" onclick="convertUrl()">Convert to CDN URL</button>
+    <input id="githubUrl" placeholder="Paste GitHub or RAW URL here..." />
+    <button class="btn" onclick="convertUrl()">Convert</button>
 
-        <div class="result-section" id="resultSection">
-            <div class="result-label">✅ Your CDN URLs (click to copy):</div>
-            
-            <div style="margin-bottom: 15px;">
-                <small style="color: #666; font-weight: 600;">With Commit Hash (Recommended):</small>
-                <div class="result-url" id="cdnUrlCommit"></div>
-                <button class="copy-btn" onclick="copyUrl('cdnUrlCommit', this)">📋 Copy</button>
-            </div>
+    <div class="result" id="result">
+        <p><strong>⚠️ Exact Version:</strong></p>
+        <div class="url-box" id="exact"></div>
 
-            <div style="margin-bottom: 15px;">
-                <small style="color: #666; font-weight: 600;">Latest Version:</small>
-                <div class="result-url" id="cdnUrlLatest"></div>
-                <button class="copy-btn" onclick="copyUrl('cdnUrlLatest', this)">📋 Copy</button>
-            </div>
+        <p><strong>✅ Safe CDN (Recommended):</strong></p>
+        <div class="url-box" id="safe"></div>
 
-            <div class="preview-section">
-                <button class="copy-btn" onclick="togglePreview()" id="previewBtn">👁️ Preview Image</button>
-                <div id="previewContainer" style="display: none;">
-                    <img class="preview-img" id="previewImg" alt="Preview">
-                </div>
-            </div>
-        </div>
-
-        <div class="info-box">
-            <strong>💡 Pro Tips:</strong>
-            • Use commit hash URLs for production (they never change)<br>
-            • Latest version URLs always point to the newest file<br>
-            • Works with any public GitHub file (images, CSS, JS, etc.)
-        </div>
+        <img id="preview" style="max-width:100%; margin-top:15px; display:none;" />
     </div>
+</div>
 
-    <script>
-        function convertUrl() {
-            const input = document.getElementById('githubUrl').value.trim();
-            const error = document.getElementById('error');
-            const resultSection = document.getElementById('resultSection');
-            
-            // Reset states
-            error.classList.remove('show');
-            resultSection.classList.remove('show');
-            
-            // Regex to parse GitHub URL
-            const regex = /https?:\/\/github\.com\/([^\/]+)\/([^\/]+)\/blob\/([^\/]+)\/(.+)/;
-            const match = input.match(regex);
-            
-            if (!match) {
-                error.classList.add('show');
-                return;
-            }
-            
-            const username = match[1];
-            const repo = match[2];
-            const commitHash = match[3];
-            const filePath = match[4];
-            
-            // Decode URL-encoded characters in the file path
-            const decodedPath = decodeURIComponent(filePath);
-            
-            // Generate CDN URLs
-            const cdnUrlWithCommit = `https://cdn.jsdelivr.net/gh/${username}/${repo}@${commitHash}/${decodedPath}`;
-            const cdnUrlLatest = `https://cdn.jsdelivr.net/gh/${username}/${repo}/${decodedPath}`;
-            
-            // Display results
-            document.getElementById('cdnUrlCommit').textContent = cdnUrlWithCommit;
-            document.getElementById('cdnUrlLatest').textContent = cdnUrlLatest;
-            document.getElementById('previewImg').src = cdnUrlWithCommit;
-            
-            resultSection.classList.add('show');
-        }
+<script>
+function convertUrl() {
+    const input = document.getElementById('githubUrl').value.trim();
 
-        function copyUrl(elementId, btn) {
-            const urlText = document.getElementById(elementId).textContent;
-            
-            navigator.clipboard.writeText(urlText).then(() => {
-                const originalText = btn.textContent;
-                btn.textContent = '✓ Copied!';
-                btn.classList.add('copied');
-                
-                setTimeout(() => {
-                    btn.textContent = originalText;
-                    btn.classList.remove('copied');
-                }, 2000);
-            });
-        }
+    let username, repo, ref, filePath;
 
-        function togglePreview() {
-            const container = document.getElementById('previewContainer');
-            const btn = document.getElementById('previewBtn');
-            
-            if (container.style.display === 'none') {
-                container.style.display = 'block';
-                btn.textContent = '🙈 Hide Preview';
-            } else {
-                container.style.display = 'none';
-                btn.textContent = '👁️ Preview Image';
-            }
-        }
+    let blob = input.match(/github\.com\/([^\/]+)\/([^\/]+)\/blob\/([^\/]+)\/(.+)/);
+    let raw = input.match(/raw\.githubusercontent\.com\/([^\/]+)\/([^\/]+)\/([^\/]+)\/(.+)/);
 
-        // Allow Enter key to convert
-        document.getElementById('githubUrl').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                convertUrl();
-            }
-        });
+    if (blob) {
+        username = blob[1];
+        repo = blob[2];
+        ref = blob[3];
+        filePath = blob[4];
+    } else if (raw) {
+        username = raw[1];
+        repo = raw[2];
+        ref = raw[3];
+        filePath = raw[4];
+    } else {
+        alert("Invalid GitHub URL");
+        return;
+    }
 
-        // Auto-convert on page load if URL is present
-        window.onload = function() {
-            const input = document.getElementById('githubUrl').value;
-            if (input) {
-                convertUrl();
-            }
-        };
-    </script>
+    filePath = decodeURIComponent(filePath);
+
+    let exact = `https://cdn.jsdelivr.net/gh/${username}/${repo}@${ref}/${filePath}`;
+    let safe = `https://cdn.jsdelivr.net/gh/${username}/${repo}@main/${filePath}`;
+
+    document.getElementById('exact').textContent = exact;
+    document.getElementById('safe').textContent = safe;
+
+    const preview = document.getElementById('preview');
+    if (filePath.match(/\.(png|jpg|jpeg|gif|webp|svg)$/i)) {
+        preview.src = safe;
+        preview.style.display = 'block';
+    } else {
+        preview.style.display = 'none';
+    }
+
+    document.getElementById('result').style.display = 'block';
+}
+</script>
+
 </body>
 </html>
