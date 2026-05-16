@@ -10,7 +10,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            display: flex; align-items: center; justify-content: center;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
             padding: 20px;
         }
         .container {
@@ -19,7 +19,17 @@
             padding: 40px; max-width: 700px; width: 100%;
         }
         h1 { text-align: center; margin-bottom: 10px; }
-        .subtitle { text-align: center; margin-bottom: 30px; color: #666; }
+        .subtitle { text-align: center; margin-bottom: 12px; color: #666; }
+        .description {
+            text-align: center;
+            color: #888;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 28px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
         input {
             width: 100%; padding: 15px;
             border-radius: 10px; border: 2px solid #e0e0e0;
@@ -36,13 +46,55 @@
             border-radius: 8px; word-break: break-all;
             margin-bottom: 10px;
         }
+
+        .footer-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 24px;
+            padding: 12px 22px;
+            background: #2d2d3a;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 50px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.25);
+            transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+        }
+        .footer-btn:hover {
+            background: #3d3d52;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(0,0,0,0.32);
+        }
+        .footer-avatar {
+            font-size: 20px;
+            line-height: 1;
+        }
+        .footer-name {
+            color: #fff;
+        }
+        .footer-gh {
+            width: 20px;
+            height: 20px;
+            opacity: 0.85;
+            flex-shrink: 0;
+        }
+        .footer-wrap {
+            text-align: center;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h1>🚀 GitHub → CDN Tool</h1>
-    <p class="subtitle">Smart jsDelivr Converter (Auto Fix Enabled)</p>
+    <p class="subtitle">Smart jsDelivr Converter</p>
+
+    <p class="description">Paste any GitHub file URL and instantly get a fast, CDN-ready jsDelivr link — perfect for using raw files in projects, scripts, or stylesheets without hitting GitHub's rate limits.</p>
 
     <input id="githubUrl" placeholder="Paste GitHub or RAW URL here..." />
     <button class="btn" onclick="convertUrl()">Convert</button>
@@ -56,6 +108,16 @@
 
         <img id="preview" style="max-width:100%; margin-top:15px; display:none;" />
     </div>
+</div>
+
+<div class="footer-wrap">
+    <a href="https://github.com/lilobaje/github-cdn-converter" target="_blank" class="footer-btn" aria-label="View on GitHub">
+        <span class="footer-avatar">🧑‍💻</span>
+        <span class="footer-name">lilobaje</span>
+        <svg class="footer-gh" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+        </svg>
+    </a>
 </div>
 
 <script>
